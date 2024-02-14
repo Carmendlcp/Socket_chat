@@ -1,6 +1,7 @@
 import express from 'express'
 import logger from 'morgan'
 
+
 import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 
@@ -8,10 +9,24 @@ const port = process.env.PORT ?? 3000
 
 const app = express ()
 const server = createServer(app)
-const io = new Server(server)
+const io = new Server(server, {
+    connectionStateRecovery:{}
+})
+
+// const db = createClient({
+//     url: "",
+//     authToken:"process.env.DB_TOKEN"
+// })
+
 
 io.on('connection', (socket)=>{
-    console.log('Usuario conectado');
+    console.log(socket);
+
+    // io.on("connection", socket => {
+    //     socket.join("aquí seria idUsuario-idUsariolocker");
+    //   });
+    //   io.to("aquí seria idUsuario-idUsariolocker").emit("some event");
+    // esto es lo que nos dijo ABEL
 
     socket.on('disconnect', ()=>{
         console.log('Usuario desconectado');
